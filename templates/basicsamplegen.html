@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>HACKATHON</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/basicsamplegen.css') }}">
+
+</head>
+
+<body>
+
+  <div class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar">
+      <div class="p-4 pt-5">
+        <a href="{{ url_for('index') }}" class="img logo rounded-circle mb-5"
+          style="background-image: url(/static/images/logo1.jpg);"></a>
+        <ul class="list-unstyled components mb-5">
+          <li class="active">
+            <a href="{{ url_for('index') }}">Home</a>
+          </li>
+          <li>
+            <a href="{{ url_for('about') }}">About</a>
+          </li>
+          <li>
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Services</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+              <li><a href="{{ url_for('basicsamplegen') }}">Basic Sample Gen</a></li>
+              <li><a href="{{ url_for('volpay3x') }}">Volpay 3.x</a></li>
+              <li><a href="{{ url_for('volpay2x') }}">Volpay 2.x</a></li>
+              <li><a href="{{ url_for('advancesamplegen') }}">Advance Sample Gen</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="{{ url_for('portfolio') }}">Portfolio</a>
+          </li>
+          <li>
+            <a href="{{ url_for('contact') }}">Contact</a>
+          </li>
+        </ul>
+
+        <div class="footer">
+          <p>
+            Copyright &copy;
+            <script>document.write(new Date().getFullYear());</script> All rights reserved.
+          </p>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content" class="p-4 p-md-5">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+          <button type="button" id="sidebarCollapse" class="btn btn-primary">
+            <i class="fa fa-bars"></i>
+            <!-- <span class="sr-only">Toggle Menu</span> -->
+          </button>
+
+        </div>
+      </nav>
+
+      <!------------------------------------------------------------- EDIT FROM BELOW ------------------------------------------------->
+
+      <div class="Sidebar-Content">
+        <h2 class="mb-4">Basic Sample Gen</h2>
+
+        <div class="basicsamplegenfileds">
+
+          <form id="regForm" action="">
+
+            <h1>MT103:</h1>
+
+          <script>
+            // Define the JavaScript function for validation
+            function validateInput() {
+                var senderReference = document.getElementById("referenceInput").value;
+    
+                // Define regular expressions for validation rules
+                var pattern = /^[A-Za-z0-9]{1,16}$/;  // 16 alphanumeric characters
+                var noConsecutiveSlashes = /[^/]{2,}/;  // No consecutive slashes
+    
+                // Check if the senderReference matches the format
+                if (pattern.test(senderReference)) {
+                    // Check for network-validated rule: Must not start or end with '/'
+                    if (!senderReference.startsWith('/') && !senderReference.endsWith('/')) {
+                        // Check for network-validated rule: Must not contain two consecutive slashes
+                        if (noConsecutiveSlashes.test(senderReference)) {
+                            document.getElementById("validationResult").textContent = "Valid";
+                        } else {
+                            document.getElementById("validationResult").textContent = "Error: Sender's Reference contains two consecutive slashes ('//')";
+                        }
+                    } else {
+                        document.getElementById("validationResult").textContent = "Error: Sender's Reference starts or ends with a slash ('/')";
+                    }
+                } else {
+                    document.getElementById("validationResult").textContent = "Error: Sender's Reference does not match the required format (16 alphanumeric characters)";
+                }
+            }
+        </script>
+    
+        <div class="tab">Sender's Reference:<span class="aestrik">*</span>
+            <p><input class="required" id="referenceInput" placeholder="Ref254" oninput="validateInput()" maxlength="16"></p>
+        </div>
+        
+        <p id="validationResult"></p>
+    
+
+            <div class="tab">Time indication:
+              <p><input placeholder="TimeZone:CLSTIME" oninput="this.className = ''" maxlength="9"></p>
+              <p><input placeholder="Timestamp:0915+0100" oninput="this.className = ''" maxlength="12"></p>
+            </div>
+            <script>
+              // Define a flag to track the form's validity
+              var formValid = false;
+          
+              // Define the JavaScript function for validation
+              function validateBankOperationCodeInput() {
+                  var BankOperationCode = document.getElementById("bankOperationCodeInput").value;
+          
+                  // Define regular expressions for validation rules
+                  var pattern = /^(CRED|CRTS|SPAY|SPRI|SSTD)$/;
+          
+                  // Check if the BankOperationCode matches the format
+                  if (BankOperationCode.length !== 4) {
+                      document.getElementById("validationResult1").textContent = "Bank Operation Code should be 4 characters long.";
+                      formValid = false;
+                  } else if (BankOperationCode.length === 0) {
+                      document.getElementById("validationResult1").textContent = "Error: Bank Operation Code is mandatory.";
+                      formValid = false;
+                  } else if (!pattern.test(BankOperationCode)) {
+                      document.getElementById("validationResult1").textContent = "Bank Operation Code should be one of: CRED, CRTS, SPAY, SPRI, SSTD.";
+                      formValid = false;
+                  } else {
+                      document.getElementById("validationResult1").textContent = "Valid";
+                      formValid = true;
+                  }
+          
+                  // Enable or disable navigation elements based on form validity
+                  updateNavigation();
+              }
+          
+              // Function to enable or disable navigation elements based on form validity
+              function updateNavigation() {
+                  var nextPageLink = document.getElementById("nextBtn"); // Change 'nextPageLink' to the actual ID of your submit button
+                  var prevPageLink = document.getElementById("prevBtn"); // Change 'prevPageLink' to the actual ID of your link to another page
+          
+                  if (formValid) {
+                      // Enable the submit button and the link to the other page
+                      nextPageLink.disabled = false;
+                      prevPageLink.disabled = false;
+                  } else {
+                      // Disable the submit button and the link to the other page
+                      nextPageLink.disabled = true;
+                      prevPageLink.disabled = false;
+                  }
+              }
+          
+          </script>
+          
+          <div class="tab">Bank Operation Code:<span class="aestrik">*</span>
+              <p><input id="bankOperationCodeInput" class="required" placeholder="SPAY" oninput="validateBankOperationCodeInput()" maxlength="4"></p>
+          </div>
+          <p id="validationResult1"></p>
+          
+          
+          <!--  <div class="tab">Bank Operation Code:<span class="aestrik">*</span>
+              <p><input class="required" placeholder="SPAY" oninput="this.className = ''" maxlength="4"></p>
+            </div>-->
+
+            <div class="tab">Instruction Code:
+              <p><input placeholder="Code:CLSTIME" oninput="this.className = ''" maxlength="4"></p>
+              <p><input placeholder="Timestamp:0915+0100" oninput="this.className = ''" maxlength="12"></p>
+            </div>
+
+            <div class="tab">Transaction Type Code:
+              <p><input placeholder="K90" oninput="this.className = ''" maxlength="3"></p>
+            </div>
+
+            <div class="tab">Value Date/Currency/Interbank Settled Amount:<span class="aestrik">*</span>
+              <p><input class="required" placeholder="YYMMDD" oninput="this.className = ''" maxlength="6">
+              </p>
+              <p><input class="required" placeholder="Countrycode" oninput="this.className = ''" maxlength="3"></p>
+              <p><input class="required" placeholder="Amount" oninput="this.className = ''" maxlength="8" type="number">
+              </p>
+            </div>
+
+            <div class="tab">Currency/Instructed Amount:
+              <p><input placeholder="Countrycode" oninput="this.className = ''" maxlength="3"></p>
+              <p><input placeholder="Amount" oninput="this.className = ''" maxlength="8" type ="number"></p>
+            </div>
+
+            <div class="tab">Exchange Rate:
+              <p><input placeholder="Countrycode" oninput="this.className = ''" maxlength="6"></p>
+            </div>
+
+            <div class="tab">
+              <p>Ordering Customer-OptionA:<span class="aestrik">*</span></p>
+              <p><input class="required" placeholder="Account" oninput="this.className = ''" maxlength="34"></p>
+              <p><input class="required" placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Ordering Customer-OptionF:<span class="aestrik">*</span></p>
+              <p><input class="required" placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
+              <p><input class="required" placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Ordering Customer-OptionK:<span class="aestrik">*</span></p>
+              <p><input class="required" placeholder="Account" oninput="this.className = ''" maxlength="34"></p>
+              <p><input class="required" placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
+              </p>
+            </div>
+
+            <div class="tab">Sending Institution:
+              <p><input placeholder="Party Identifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input placeholder="Party Identifier" oninput="this.className = ''" maxlength="10"></p>
+            </div>
+
+            <div class="tab">
+              <p>Ordering Institution-OptionA:</p>
+              <p><input placeholder="Party Identifier" oninput="this.className = ''" maxlength="34">
+              </p>
+              <p><input placeholder="Identifier Code" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Ordering Institution-OptionD:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
+              <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
+              </p>
+            </div>
+
+            <div class="tab">
+              <p>Sender's Correspondent-OptionA:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Sender's Correspondent-OptionB:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
+              <p><input  placeholder="Location" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Sender's Correspondent-OptionD:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
+              </p>
+            </div>
+
+            <div class="tab">
+              <p>Receiver's Correspondent-OptionA:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Receiver's Correspondent-OptionB:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
+              <p><input  placeholder="Location" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Receiver's Correspondent-OptionD:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
+              </p>
+            </div>
+
+            <div class="tab">
+              <p>Third Reimbursement Institution-OptionA:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Third Reimbursement Institution-OptionB:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
+              <p><input  placeholder="Location" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Third Reimbursement Institution-OptionD:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
+              </p>
+            </div>
+
+            <div class="tab">
+              <p>Intermediary Institution-OptionA:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Intermediary Institution-OptionC:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
+
+              <p>Intermediary Institution-OptionD:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
+              </p>
+            </div>
+
+            <div class="tab">
+              <p>Account With Institution-OptionA:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Account With Institution-OptionB:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
+              <p><input  placeholder="Location" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Account With Institution-OptionC:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+
+              <p>Account With Institution-OptionD:</p>
+              <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
+              <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140"></p>
+
+            </div>
+
+            <div class="tab">
+              <p>Beneficiary Customer-NoLetter Option:<span class="aestrik">*</span></p>
+              <p><input class="required" placeholder="Account" oninput="this.className = ''" maxlength="34"></p>
+              <p><input class="required" placeholder="Name and Address" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Beneficiary Customer-OptionF:<span class="aestrik">*</span></p>
+              <p><input class="required" placeholder="AccountAccount" oninput="this.className = ''" maxlength="35"></p>
+              <p><input class="required" placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
+
+              <p>Beneficiary Customer-OptionK:<span class="aestrik">*</span></p>
+              <p><input class="required" placeholder="Account" oninput="this.className = ''" maxlength="34"></p>
+              <p><input class="required" placeholder="Number/Name and Address" oninput="this.className = ''" maxlength="140">
+              </p>
+            </div>
+
+            <div class="tab">Remittance Information:
+              <p><input placeholder="AddationalInfo" oninput="this.className = ''" maxlength="140"></p>
+            </div>
+
+            <div class="tab">Details of Charges:<span class="aestrik">*</span>
+              <p><input class="required" placeholder="chargesInfo" oninput="this.className = ''" maxlength="3"></p>
+            </div>
+
+            <div class="tab">Sender's Charges:
+              <p><input placeholder="EUR8,00" oninput="this.className = ''" maxlength="10"></p>
+            </div>
+
+            <div class="tab">Receiver's Charges:
+              <p><input placeholder="EUR5,50" oninput="this.className = ''" maxlength="10"></p>
+            </div>
+
+            <div class="tab">Sender to Receiver Information:
+              <p><input placeholder="sender-Rciver info" oninput="this.className = ''" maxlength="210"></p>
+            </div>
+
+            <div class="tab">Regulatory Reporting:
+              <p><input placeholder="Reporting Info" oninput="this.className = ''" maxlength="105"></p>
+            </div>
+
+
+
+
+            <div style="overflow:auto;">
+              <div style="float:right;">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+              </div>
+            </div>
+
+            <!-- Circles which indicates the steps of the form: -->
+            <div style="text-align:center;margin-top:40px;">
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!------------------------------------------------------------- EDIT UPTO ABOVE ------------------------------------------------------->
+
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/basicsamplegen.js') }}"></script>
+
+</body>
+
+</html>
