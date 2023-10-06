@@ -11,9 +11,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/basicsamplegen.css') }}">
-
 </head>
-
 <body>
 
   <div class="wrapper d-flex align-items-stretch">
@@ -95,7 +93,7 @@
                     if (!senderReference.startsWith('/') && !senderReference.endsWith('/')) {
                         // Check for network-validated rule: Must not contain two consecutive slashes
                         if (noConsecutiveSlashes.test(senderReference)) {
-                            document.getElementById("validationResult").textContent = "Valid";
+                            //document.getElementById("validationResult").textContent = "Valid";
                         } else {
                             document.getElementById("validationResult").textContent = "Error: Sender's Reference contains two consecutive slashes ('//')";
                         }
@@ -108,14 +106,14 @@
             }
         </script>
     
-        <div class="tab">Sender's Reference:<span class="aestrik">*</span>
+        <div class="tab">Sender's Reference(:20:):<span class="aestrik">*</span>
             <p><input class="required" id="referenceInput" placeholder="Ref254" oninput="validateInput()" maxlength="16"></p>
         </div>
         
         <p id="validationResult"></p>
     
 
-            <div class="tab">Time indication:
+            <div class="tab">Time indication(:13C:):
               <p><input placeholder="TimeZone:CLSTIME" oninput="this.className = ''" maxlength="9"></p>
               <p><input placeholder="Timestamp:0915+0100" oninput="this.className = ''" maxlength="12"></p>
             </div>
@@ -141,7 +139,7 @@
                       document.getElementById("validationResult1").textContent = "Bank Operation Code should be one of: CRED, CRTS, SPAY, SPRI, SSTD.";
                       formValid = false;
                   } else {
-                      document.getElementById("validationResult1").textContent = "Valid";
+                  //    document.getElementById("validationResult1").textContent = "Valid";
                       formValid = true;
                   }
           
@@ -167,7 +165,7 @@
           
           </script>
           
-          <div class="tab">Bank Operation Code:<span class="aestrik">*</span>
+          <div class="tab">Bank Operation Code(:23B:):<span class="aestrik">*</span>
               <p><input id="bankOperationCodeInput" class="required" placeholder="SPAY" oninput="validateBankOperationCodeInput()" maxlength="4"></p>
           </div>
           <p id="validationResult1"></p>
@@ -177,16 +175,16 @@
               <p><input class="required" placeholder="SPAY" oninput="this.className = ''" maxlength="4"></p>
             </div>-->
 
-            <div class="tab">Instruction Code:
+            <div class="tab">Instruction Code(:23E:):
               <p><input placeholder="Code:CLSTIME" oninput="this.className = ''" maxlength="4"></p>
               <p><input placeholder="Timestamp:0915+0100" oninput="this.className = ''" maxlength="12"></p>
             </div>
 
-            <div class="tab">Transaction Type Code:
+            <div class="tab">Transaction Type Code(:26T:):
               <p><input placeholder="K90" oninput="this.className = ''" maxlength="3"></p>
             </div>
 
-            <div class="tab">Value Date/Currency/Interbank Settled Amount:<span class="aestrik">*</span>
+            <div class="tab">Value Date/Currency/Interbank Settled Amount(:32A:):<span class="aestrik">*</span>
               <p><input class="required" placeholder="YYMMDD" oninput="this.className = ''" maxlength="6">
               </p>
               <p><input class="required" placeholder="Countrycode" oninput="this.className = ''" maxlength="3"></p>
@@ -194,160 +192,577 @@
               </p>
             </div>
 
-            <div class="tab">Currency/Instructed Amount:
+            <div class="tab">Currency/Instructed Amount(:33B:):
               <p><input placeholder="Countrycode" oninput="this.className = ''" maxlength="3"></p>
               <p><input placeholder="Amount" oninput="this.className = ''" maxlength="8" type ="number"></p>
             </div>
 
-            <div class="tab">Exchange Rate:
+            <div class="tab">Exchange Rate(:36:):
               <p><input placeholder="Countrycode" oninput="this.className = ''" maxlength="6"></p>
             </div>
 
-            <div class="tab">
-              <p>Ordering Customer-OptionA:<span class="aestrik">*</span></p>
+            <!--<div class="tab">
+              <p>Ordering Customer-OptionA (:50A:):<span class="aestrik">*</span></p>
               <p><input class="required" placeholder="Account" oninput="this.className = ''" maxlength="34"></p>
               <p><input class="required" placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Ordering Customer-OptionF:<span class="aestrik">*</span></p>
+              <p>Ordering Customer-OptionF (:50F:):<span class="aestrik">*</span></p>
               <p><input class="required" placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
               <p><input class="required" placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Ordering Customer-OptionK:<span class="aestrik">*</span></p>
+              <p>Ordering Customer-OptionK (:50K:):<span class="aestrik">*</span></p>
               <p><input class="required" placeholder="Account" oninput="this.className = ''" maxlength="34"></p>
               <p><input class="required" placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
               </p>
-            </div>
+            </div>-->
 
-            <div class="tab">Sending Institution:
+            <style>
+              .hidden {
+                display: none;
+              }
+            </style>
+            <div class="tab">
+              <p>Ordering Customer-Option (:50a:):</p>
+              <select id="orderingCustomerType" onchange="toggleFields50a()">
+                <option value="">Select an option</option> <!-- Blank option -->
+                <option value="Ordering Customer-OptionA">Ordering Customer-OptionA (:50A:)</option>
+                <option value="Ordering Customer-OptionF">Ordering Customer-OptionF (:50F:)</option>
+                <option value="Ordering Customer-OptionK">Ordering Customer-OptionK (:50K:)</option>
+              </select>
+
+              <p><input id="account50a" placeholder="Account" oninput="this.className = ''" maxlength="34" class="hidden"></p>
+              <p><input id="identifierCode50a" placeholder="Identifier Code" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+              <p><input id="partyIdentifier50a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="35" class="hidden"></p>
+              <p><input id="nameAndAddressF50a" placeholder="Number/Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
+              <p><input id="nameAndAddress50a" placeholder="Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
+			  
+            </div>
+            <script>
+              function toggleFields50a() {
+                var orderingCustomerType = document.getElementById("orderingCustomerType").value;
+			    var account50a = document.getElementById("account50a");
+			    var identifierCode50a = document.getElementById("identifierCode50a");
+                var partyIdentifier50a = document.getElementById("partyIdentifier50a");
+                var nameAndAddressF50a = document.getElementById("nameAndAddressF50a");
+                var nameAndAddress50a = document.getElementById("nameAndAddress50a");
+          
+                // Hide all fields
+                account50a.classList.add("hidden");
+                identifierCode50a.classList.add("hidden");
+                partyIdentifier50a.classList.add("hidden");
+                nameAndAddressF50a.classList.add("hidden");
+                nameAndAddress50a.classList.add("hidden");
+
+                // Show fields based on the selected option
+                if (orderingCustomerType === "Ordering Customer-OptionA") {
+                  account50a.classList.remove("hidden");
+                  identifierCode50a.classList.remove("hidden");
+                } else if (orderingCustomerType === "Ordering Customer-OptionF") {
+                  partyIdentifier50a.classList.remove("hidden");
+                  nameAndAddressF50a.classList.remove("hidden");
+                } else if (orderingCustomerType === "Ordering Customer-OptionK") {
+                  account50a.classList.remove("hidden");
+                  nameAndAddress50a.classList.remove("hidden");
+                }
+              }
+            </script>
+            
+            <div class="tab">Sending Institution (:51A:):
               <p><input placeholder="Party Identifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input placeholder="Party Identifier" oninput="this.className = ''" maxlength="10"></p>
             </div>
 
-            <div class="tab">
-              <p>Ordering Institution-OptionA:</p>
+            <!--<div class="tab">
+              <p>Ordering Institution-OptionA (:52A:):</p>
               <p><input placeholder="Party Identifier" oninput="this.className = ''" maxlength="34">
               </p>
               <p><input placeholder="Identifier Code" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Ordering Institution-OptionD:</p>
+              <p>Ordering Institution-OptionD (:52D:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
               <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
               </p>
-            </div>
-
+            </div>-->
+            <style>
+              .hidden {
+                display: none;
+              }
+            </style>
             <div class="tab">
-              <p>Sender's Correspondent-OptionA:</p>
+              <p>Ordering Institution-Option (:52a:):</p>
+              <select id="institutionType" onchange="toggleFields52a()">
+                <option value="">Select an option</option> <!-- Blank option -->
+                <option value="Ordering Institution-OptionA">Ordering Institution-OptionA (:52A:)</option>
+                <option value="Ordering Institution-OptionD">Ordering Institution-OptionD (:52D:)</option>
+              </select>
+              
+              <p><input id="partyIdentifier52a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="34" class="hidden"></p>
+              <p><input id="identifierCode52a" placeholder="Identifier Code" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+              <p><input id="partyIdentifier52aD" placeholder="Party Identifier" oninput="this.className = ''" maxlength="35" class="hidden"></p>
+              <p><input id="nameAndAddress52a" placeholder="Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
+            </div>
+            <script>
+              function toggleFields52a() {
+                var institutionType = document.getElementById("institutionType").value;
+                var partyIdentifier52a = document.getElementById("partyIdentifier52a");
+                var identifierCode52a = document.getElementById("identifierCode52a");
+                var partyIdentifier52aD = document.getElementById("partyIdentifier52aD");
+                var nameAndAddress52a = document.getElementById("nameAndAddress52a");
+          
+                // Hide all fields
+                partyIdentifier52a.classList.add("hidden");
+                identifierCode52a.classList.add("hidden");
+                partyIdentifier52aD.classList.add("hidden");
+                nameAndAddress52a.classList.add("hidden");
+          
+                // Show fields based on the selected option
+                if (institutionType === "Ordering Institution-OptionA") {
+                  partyIdentifier52a.classList.remove("hidden");
+                  identifierCode52a.classList.remove("hidden");
+                } else if (institutionType === "Ordering Institution-OptionD") {
+                  partyIdentifier52aD.classList.remove("hidden");
+                  nameAndAddress52a.classList.remove("hidden");
+                }
+              }
+            </script>
+            <!--<div class="tab">
+              <p>Sender's Correspondent-OptionA (:53A:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Sender's Correspondent-OptionB:</p>
+              <p>Sender's Correspondent-OptionB (:53B:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
               <p><input  placeholder="Location" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Sender's Correspondent-OptionD:</p>
+              <p>Sender's Correspondent-OptionD (:53D:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
               </p>
-            </div>
-
+            </div>-->
+            <style>
+              .hidden {
+                display: none;
+              }
+            </style>
             <div class="tab">
-              <p>Receiver's Correspondent-OptionA:</p>
+              <p>Sender's Correspondent Option (:53a:):</p>
+              <select id="SendersCorrespondentType" onchange="toggleFields53a()">
+                <option value="">Select an option</option> <!-- Blank option -->
+                <option value="Senders Correspondent-OptionA">Sender's Correspondent-OptionA (:53A:):</option>
+                <option value="Senders Correspondent-OptionB">Sender's Correspondent-OptionA (:53B:):</option>
+                <option value="Senders Correspondent-OptionD">Sender's Correspondent-OptionD (:53D:):</option>
+              </select>
+              
+              <p><input id="partyIdentifier53a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="34" class="hidden"></p>
+              <p><input id="identifierCode53a" placeholder="Identifier Code" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+              <p><input id="partyIdentifierB53a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="35" class="hidden"></p>
+              <p><input id="nameAndAddress53a" placeholder="Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
+              <p><input id="location53a" placeholder="Location" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+            </div>
+            <script>
+              function toggleFields53a() {
+                var SendersCorrespondentType = document.getElementById("SendersCorrespondentType").value;
+                var partyIdentifier53a = document.getElementById("partyIdentifier53a");
+                var identifierCode53a = document.getElementById("identifierCode53a");
+                var partyIdentifierB53a = document.getElementById("partyIdentifierB53a");
+                var nameAndAddress53a = document.getElementById("nameAndAddress53a");
+                var location53a = document.getElementById("location53a");
+            
+                // Hide all fields
+                partyIdentifier53a.classList.add("hidden");
+                identifierCode53a.classList.add("hidden");
+                partyIdentifierB53a.classList.add("hidden");
+                nameAndAddress53a.classList.add("hidden");
+                location53a.classList.add("hidden");
+            
+                switch (SendersCorrespondentType) {
+                  case "Senders Correspondent-OptionA":
+                    partyIdentifier53a.classList.remove("hidden");
+                    identifierCode53a.classList.remove("hidden");
+                    break;
+                  case "Senders Correspondent-OptionB":
+                    partyIdentifierB53a.classList.remove("hidden");
+                    location53a.classList.remove("hidden");
+                    break;
+                  case "Senders Correspondent-OptionD":
+                    partyIdentifier53a.classList.remove("hidden");
+                    nameAndAddress53a.classList.remove("hidden");
+                    break;
+                  default:
+                    // Handle any other cases or provide a default behavior
+                    break;
+                }
+              }
+            </script>
+            
+            <!--<div class="tab">
+              <p>Receiver's Correspondent-OptionA (:54A:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Receiver's Correspondent-OptionB:</p>
+              <p>Receiver's Correspondent-OptionB (:54B:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
               <p><input  placeholder="Location" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Receiver's Correspondent-OptionD:</p>
+              <p>Receiver's Correspondent-OptionD (:54D:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
               </p>
-            </div>
-
+            </div>-->
+            <style>
+              .hidden {
+                display: none;
+              }
+            </style>
             <div class="tab">
-              <p>Third Reimbursement Institution-OptionA:</p>
+              <p>Receiver's Correspondent Option (:54a:):</p>
+              <select id="ReceiversCorrespondentType" onchange="toggleFields54a()">
+                <option value="">Select an option</option> <!-- Blank option -->
+                <option value="Senders Correspondent-OptionA">Receiver's Correspondent-OptionA (:54A:):</option>
+                <option value="Senders Correspondent-OptionB">Receiver's Correspondent-OptionA (:54B:):</option>
+                <option value="Senders Correspondent-OptionD">Receiver's Correspondent-OptionD (:54D:):</option>
+              </select>
+              
+              <p><input id="partyIdentifier54a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="34" class="hidden"></p>
+              <p><input id="identifierCode54a" placeholder="Identifier Code" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+              <p><input id="partyIdentifierB54a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="35" class="hidden"></p>
+              <p><input id="nameAndAddress54a" placeholder="Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
+              <p><input id="location54a" placeholder="Location" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+            </div>
+            <script>
+              function toggleFields54a() {
+                var ReceiversCorrespondentType = document.getElementById("ReceiversCorrespondentType").value;
+                var partyIdentifier54a = document.getElementById("partyIdentifier54a");
+                var identifierCode54a = document.getElementById("identifierCode54a");
+                var partyIdentifierB54a = document.getElementById("partyIdentifierB54a");
+                var nameAndAddress54a = document.getElementById("nameAndAddress54a");
+                var location54a = document.getElementById("location54a");
+            
+                // Hide all fields
+                partyIdentifier54a.classList.add("hidden");
+                identifierCode54a.classList.add("hidden");
+                partyIdentifierB54a.classList.add("hidden");
+                nameAndAddress54a.classList.add("hidden");
+                location54a.classList.add("hidden");
+            
+                switch (ReceiversCorrespondentType) {
+                  case "Senders Correspondent-OptionA":
+                    partyIdentifier54a.classList.remove("hidden");
+                    identifierCode54a.classList.remove("hidden");
+                    break;
+                  case "Senders Correspondent-OptionB":
+                    partyIdentifierB54a.classList.remove("hidden");
+                    location54a.classList.remove("hidden");
+                    break;
+                  case "Senders Correspondent-OptionD":
+                    partyIdentifier54a.classList.remove("hidden");
+                    nameAndAddress54a.classList.remove("hidden");
+                    break;
+                  default:
+                    // Handle any other cases or provide a default behavior
+                    break;
+                }
+              }
+            </script>
+
+            <!--<div class="tab">
+              <p>Third Reimbursement Institution-OptionA (:55A:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Third Reimbursement Institution-OptionB:</p>
+              <p>Third Reimbursement Institution-OptionB (:55B:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
               <p><input  placeholder="Location" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Third Reimbursement Institution-OptionD:</p>
+              <p>Third Reimbursement Institution-OptionD (:55D:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
               </p>
-            </div>
-
+            </div>-->
+            <style>
+              .hidden {
+                display: none;
+              }
+            </style>
             <div class="tab">
-              <p>Intermediary Institution-OptionA:</p>
+              <p>Third Reimbursement Institution Option (:55a:):</p>
+              <select id="ThirdReimbursementInstitutionType" onchange="toggleFields55a()">
+                <option value="">Select an option</option> <!-- Blank option -->
+                <option value="Third Reimbursement Institution-OptionA">Third Reimbursement Institution-OptionA (:55A:):</option>
+                <option value="Third Reimbursement Institution-OptionB">Third Reimbursement Institution-OptionA (:55B:):</option>
+                <option value="Third Reimbursement Institution-OptionD">Third Reimbursement Institution-OptionD (:55D:):</option>
+              </select>
+              
+              <p><input id="partyIdentifier55a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="34" class="hidden"></p>
+              <p><input id="identifierCode55a" placeholder="Identifier Code" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+              <p><input id="partyIdentifierB55a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="35" class="hidden"></p>
+              <p><input id="nameAndAddress55a" placeholder="Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
+              <p><input id="location55a" placeholder="Location" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+            </div>
+            <script>
+              function toggleFields55a() {
+                var ThirdReimbursementInstitutionType = document.getElementById("ThirdReimbursementInstitutionType").value;
+                var partyIdentifier55a = document.getElementById("partyIdentifier55a");
+                var identifierCode55a = document.getElementById("identifierCode55a");
+                var partyIdentifierB55a = document.getElementById("partyIdentifierB55a");
+                var nameAndAddress55a = document.getElementById("nameAndAddress55a");
+                var location55a = document.getElementById("location55a");
+            
+                // Hide all fields
+                partyIdentifier55a.classList.add("hidden");
+                identifierCode55a.classList.add("hidden");
+                partyIdentifierB55a.classList.add("hidden");
+                nameAndAddress55a.classList.add("hidden");
+                location55a.classList.add("hidden");
+            
+                switch (ThirdReimbursementInstitutionType) {
+                  case "Third Reimbursement Institution-OptionA":
+                    partyIdentifier55a.classList.remove("hidden");
+                    identifierCode55a.classList.remove("hidden");
+                    break;
+                  case "Third Reimbursement Institution-OptionB":
+                    partyIdentifierB55a.classList.remove("hidden");
+                    location55a.classList.remove("hidden");
+                    break;
+                  case "Third Reimbursement Institution-OptionD":
+                    partyIdentifier55a.classList.remove("hidden");
+                    nameAndAddress55a.classList.remove("hidden");
+                    break;
+                  default:
+                    // Handle any other cases or provide a default behavior
+                    break;
+                }
+              }
+            </script>
+
+            <!--<div class="tab">
+              <p>Intermediary Institution-OptionA (:56A:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Intermediary Institution-OptionC:</p>
+              <p>Intermediary Institution-OptionC  (:56C:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
 
-              <p>Intermediary Institution-OptionD:</p>
+              <p>Intermediary Institution-OptionD  (:56D:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140">
               </p>
-            </div>
-
+            </div>-->
+            <style>
+              .hidden {
+                display: none;
+              }
+            </style>
             <div class="tab">
-              <p>Account With Institution-OptionA:</p>
+              <p>Intermediary Institution Option (:56a:):</p>
+              <select id="IntermediaryInstitutionType" onchange="toggleFields56a()">
+                <option value="">Select an option</option> <!-- Blank option -->
+                <option value="Intermediary Institution-OptionA">Intermediary Institution-OptionA (:56A:):</option>
+                <option value="Intermediary Institution-OptionC">Intermediary Institution-OptionA (:56C:):</option>
+                <option value="Intermediary Institution-OptionD">Intermediary Institution-OptionD (:56D:):</option>
+              </select>
+              
+              <p><input id="partyIdentifier56a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="34" class="hidden"></p>
+              <p><input id="identifierCode56a" placeholder="Identifier Code" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+              <p><input id="partyIdentifierC56a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="35" class="hidden"></p>
+              <p><input id="nameAndAddress56a" placeholder="Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
+            </div>
+            <script>
+              function toggleFields56a() {
+                var IntermediaryInstitutionType = document.getElementById("IntermediaryInstitutionType").value;
+                var partyIdentifier56a = document.getElementById("partyIdentifier56a");
+                var identifierCode56a = document.getElementById("identifierCode56a");
+                var partyIdentifierC56a = document.getElementById("partyIdentifierC56a");
+                var nameAndAddress56a = document.getElementById("nameAndAddress56a");
+            
+                // Hide all fields
+                partyIdentifier56a.classList.add("hidden");
+                identifierCode56a.classList.add("hidden");
+                partyIdentifierC56a.classList.add("hidden");
+                nameAndAddress56a.classList.add("hidden");
+            
+                switch (IntermediaryInstitutionType) {
+                  case "Intermediary Institution-OptionA":
+                    partyIdentifier56a.classList.remove("hidden");
+                    identifierCode56a.classList.remove("hidden");
+                    break;
+                  case "Intermediary Institution-OptionC":
+                    partyIdentifierC56a.classList.remove("hidden");
+                    break;
+                  case "Intermediary Institution-OptionD":
+                    partyIdentifier56a.classList.remove("hidden");
+                    nameAndAddress56a.classList.remove("hidden");
+                    break;
+                  default:
+                    // Handle any other cases or provide a default behavior
+                    break;
+                }
+              }
+            </script>
+
+            <!--<div class="tab">
+              <p>Account With Institution-OptionA (:57A:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Account With Institution-OptionB:</p>
+              <p>Account With Institution-OptionB (:57B:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="35"></p>
               <p><input  placeholder="Location" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Account With Institution-OptionC:</p>
+              <p>Account With Institution-OptionC (:57C:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
 
-              <p>Account With Institution-OptionD:</p>
+              <p>Account With Institution-OptionD (:57D:):</p>
               <p><input  placeholder="PartyIdentifier" oninput="this.className = ''" maxlength="34"></p>
               <p><input  placeholder="Name and Address" oninput="this.className = ''" maxlength="140"></p>
 
-            </div>
-
+            </div>-->
+            <style>
+              .hidden {
+                display: none;
+              }
+            </style>
             <div class="tab">
-              <p>Beneficiary Customer-NoLetter Option:<span class="aestrik">*</span></p>
+              <p>Account With Institution Option (:57a:):</p>
+              <select id="AccountWithInstitutionType" onchange="toggleFields57a()">
+                <option value="">Select an option</option> <!-- Blank option -->
+                <option value="Account With Institution-OptionA">Account With Institution-OptionA (:57A:):</option>
+                <option value="Account With Institution-OptionB">Account With Institution-OptionB (:57B:):</option>
+                <option value="Account With Institution-OptionC">Account With Institution-OptionC (:57C:):</option>
+                <option value="Account With Institution-OptionD">Account With Institution-OptionD (:57D:):</option>
+              </select>
+              
+              <p><input id="partyIdentifier57a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="34" class="hidden"></p>
+              <p><input id="identifierCode57a" placeholder="Identifier Code" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+              <p><input id="partyIdentifierB57a" placeholder="Party Identifier" oninput="this.className = ''" maxlength="35" class="hidden"></p>
+              <p><input id="nameAndAddress57a" placeholder="Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
+             <p><input id="location57a" placeholder="Location" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+            </div>
+            <script>
+              function toggleFields57a() {
+                var AccountWithInstitutionType = document.getElementById("AccountWithInstitutionType").value;
+                var partyIdentifier57a = document.getElementById("partyIdentifier57a");
+                var identifierCode57a = document.getElementById("identifierCode57a");
+                var partyIdentifierB57a = document.getElementById("partyIdentifierB57a");
+                var nameAndAddress57a = document.getElementById("nameAndAddress57a");
+                var location57a = document.getElementById("location57a");
+                // Hide all fields
+                partyIdentifier57a.classList.add("hidden");
+                identifierCode57a.classList.add("hidden");
+                partyIdentifierB57a.classList.add("hidden");
+                nameAndAddress57a.classList.add("hidden");
+                location57a.classList.add("hidden");
+            
+                switch (AccountWithInstitutionType) {
+                  case "Account With Institution-OptionA":
+                    partyIdentifier57a.classList.remove("hidden");
+                    identifierCode57a.classList.remove("hidden");
+                    break;
+                  case "Account With Institution-OptionB":
+                    partyIdentifierB57a.classList.remove("hidden");
+                    location57a.classList.remove("hidden");
+                    break;
+                  case "Account With Institution-OptionC":
+                    partyIdentifier57a.classList.remove("hidden");
+                    break;
+                  case "Account With Institution-OptionD":
+                    partyIdentifier57a.classList.remove("hidden");
+                    nameAndAddress57a.classList.remove("hidden");
+                    break;
+                  default:
+                    // Handle any other cases or provide a default behavior
+                    break;
+                }
+              }
+            </script>
+            <!--<div class="tab">
+              <p>Beneficiary Customer-NoLetter Option (:59:):<span class="aestrik">*</span></p>
               <p><input class="required" placeholder="Account" oninput="this.className = ''" maxlength="34"></p>
               <p><input class="required" placeholder="Name and Address" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Beneficiary Customer-OptionF:<span class="aestrik">*</span></p>
+              <p>Beneficiary Customer-OptionF (:59F:):<span class="aestrik">*</span></p>
               <p><input class="required" placeholder="AccountAccount" oninput="this.className = ''" maxlength="35"></p>
               <p><input class="required" placeholder="IdentifierCode" oninput="this.className = ''" maxlength="10"></p>
 
-              <p>Beneficiary Customer-OptionK:<span class="aestrik">*</span></p>
+              <p>Beneficiary Customer-OptionK (:59K:):<span class="aestrik">*</span></p>
               <p><input class="required" placeholder="Account" oninput="this.className = ''" maxlength="34"></p>
               <p><input class="required" placeholder="Number/Name and Address" oninput="this.className = ''" maxlength="140">
               </p>
+            </div>-->
+            <style>
+              .hidden {
+                display: none;
+              }
+            </style>
+            <div class="tab">
+              <p>Beneficiary Customer Option (:59a:):</p>
+              <select id="BeneficiaryCustomerType" onchange="toggleFields59a()">
+                <option value="">Select an option</option> <!-- Blank option -->
+                <option value="Beneficiary Customer-NoLetterOption">Beneficiary Customer-NoLetterOption (:59:):</option>
+                <option value="Beneficiary Customer-OptionA">Beneficiary Customer-OptionA (:59A:):</option>
+                <option value="Beneficiary Customer-OptionF">Beneficiary Customer-OptionF (:59F:):</option>
+              </select>
+              
+              <p><input id="account59a" placeholder="Account" oninput="this.className = ''" maxlength="34" class="hidden"></p>
+              <p><input id="nameAndAddress59a" placeholder="Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
+              <p><input id="identifierCode59a" placeholder="Identifier Code" oninput="this.className = ''" maxlength="10" class="hidden"></p>
+             <p><input id="nameAndAddressF59a" placeholder="Number/Name and Address" oninput="this.className = ''" maxlength="140" class="hidden"></p>
             </div>
+            <script>
+              function toggleFields59a() {
+                var BeneficiaryCustomerType = document.getElementById("BeneficiaryCustomerType").value;
+                var account59a = document.getElementById("account59a");
+                var nameAndAddress59a = document.getElementById("nameAndAddress59a");
+                var identifierCode59a = document.getElementById("identifierCode59a");
+                var nameAndAddressF59a = document.getElementById("nameAndAddressF59a");
+                // Hide all fields
+                account59a.classList.add("hidden");
+                nameAndAddress59a.classList.add("hidden");
+                identifierCode59a.classList.add("hidden");
+                nameAndAddress59a.classList.add("hidden");
+                nameAndAddressF59a.classList.add("hidden");
+            
+                switch (BeneficiaryCustomerType) {
+                  case "Beneficiary Customer-NoLetterOption":
+                    account59a.classList.remove("hidden");
+                    nameAndAddress59a.classList.remove("hidden");
+                    break;
+                  case "Beneficiary Customer-OptionA":
+                    account59a.classList.remove("hidden");
+                    identifierCode59a.classList.remove("hidden");
+                    break;
+                  case "Beneficiary Customer-OptionF":
+                    account59a.classList.remove("hidden");
+					nameAndAddressF59a.classList.remove("hidden");
+                    break;
+                  default:
+                    // Handle any other cases or provide a default behavior
+                    break;
+                }
+              }
+            </script>
 
-            <div class="tab">Remittance Information:
+            <div class="tab">Remittance Information (:70:):
               <p><input placeholder="AddationalInfo" oninput="this.className = ''" maxlength="140"></p>
             </div>
 
-            <div class="tab">Details of Charges:<span class="aestrik">*</span>
+            <div class="tab">Details of Charges (:71A:):<span class="aestrik">*</span>
               <p><input class="required" placeholder="chargesInfo" oninput="this.className = ''" maxlength="3"></p>
             </div>
 
-            <div class="tab">Sender's Charges:
+            <div class="tab">Sender's Charges (:71F:):
               <p><input placeholder="EUR8,00" oninput="this.className = ''" maxlength="10"></p>
             </div>
 
-            <div class="tab">Receiver's Charges:
+            <div class="tab">Receiver's Charges (:71G:):
               <p><input placeholder="EUR5,50" oninput="this.className = ''" maxlength="10"></p>
             </div>
 
-            <div class="tab">Sender to Receiver Information:
+            <div class="tab">Sender to Receiver Information (:72:):
               <p><input placeholder="sender-Rciver info" oninput="this.className = ''" maxlength="210"></p>
             </div>
 
-            <div class="tab">Regulatory Reporting:
+            <div class="tab">Regulatory Reporting (:77B:):
               <p><input placeholder="Reporting Info" oninput="this.className = ''" maxlength="105"></p>
             </div>
 
